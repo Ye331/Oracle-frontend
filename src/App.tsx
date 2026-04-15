@@ -57,7 +57,7 @@ const AppContent = () => {
           </div>
           
           <div className={`text-xs font-medium tracking-widest uppercase text-center md:text-right transition-colors duration-700 ${isTechTheme ? 'text-bone-cyan/50' : 'text-bone-ink/50'}`}>
-            <p>© 2024 Oracle Bone Inscriptions</p>
+            <p>© 2026 Oracle Bone Inscriptions</p>
             <p className="mt-1">Digital Heritage & AI Analysis</p>
           </div>
         </div>
