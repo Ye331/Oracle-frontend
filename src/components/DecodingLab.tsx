@@ -154,6 +154,15 @@ export const DecodingLab = () => {
 
   const analysisContent = uploadedImage ? ANALYSIS_COPY.bird : ANALYSIS_COPY.qi;
 
+  const currentStepMetrics = useMemo(() => {
+    if (activeStep !== 2) {
+      return DECODING_STEPS[activeStep].metrics;
+    }
+    return uploadedImage
+      ? { ...DECODING_STEPS[2].metrics, '节点数': '18', '边数': '23' }
+      : { ...DECODING_STEPS[2].metrics, '节点数': '14', '边数': '16' };
+  }, [activeStep, uploadedImage]);
+
   const canPreviewLarge = hasAnalyzed && !isAnalyzing && (activeStep === 1 || activeStep === 2) && !!stageImage;
 
   const openPreview = () => {
@@ -163,7 +172,7 @@ export const DecodingLab = () => {
   };
 
   return (
-    <section id="解码" className="py-16 md:py-24 bg-gradient-to-br from-[#1a2232] via-[#213047] to-[#2f2742] text-zinc-100 overflow-hidden relative min-h-screen">
+    <section id="解码" className="py-16 md:py-24 bg-bone-paper parchment-texture text-bone-ink overflow-hidden relative min-h-screen">
       
       {/* Initialization Overlay */}
       <AnimatePresence>
@@ -172,22 +181,22 @@ export const DecodingLab = () => {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="absolute inset-0 z-50 bg-gradient-to-b from-[#182232] to-[#232f46] flex flex-col items-center justify-center"
+            className="absolute inset-0 z-50 bg-[#f6efe0] flex flex-col items-center justify-center"
           >
             <div className="w-64 space-y-4">
-              <div className="flex justify-between text-sm font-mono text-zinc-500 tracking-widest uppercase">
+              <div className="flex justify-between text-sm font-mono text-bone-ink/45 tracking-widest uppercase">
                 <span>System Boot</span>
                 <span>Oracle-Net v4.2</span>
               </div>
-              <div className="h-px bg-white/20 relative overflow-hidden">
+              <div className="h-px bg-bone-ink/20 relative overflow-hidden">
                 <motion.div 
                   initial={{ x: '-100%' }}
                   animate={{ x: '100%' }}
                   transition={{ duration: 1.5, ease: "linear" }}
-                  className="absolute inset-0 bg-amber-500"
+                  className="absolute inset-0 bg-bone-brown"
                 />
               </div>
-              <div className="text-center text-base font-mono text-amber-500 animate-pulse">
+              <div className="text-center text-base font-mono text-bone-brown animate-pulse">
                 Initializing Decoding Lab...
               </div>
             </div>
@@ -195,13 +204,13 @@ export const DecodingLab = () => {
         )}
       </AnimatePresence>
 
-      {/* Decorative background grid - Subtle Amber */}
+      {/* Decorative background grid */}
       <div
-        className="absolute inset-0 opacity-10 pointer-events-none"
-        style={{ backgroundImage: 'radial-gradient(rgba(56,189,248,0.25) 1px, transparent 1px)', backgroundSize: '36px 36px' }}
+        className="absolute inset-0 opacity-15 pointer-events-none"
+        style={{ backgroundImage: 'radial-gradient(rgba(139,115,85,0.22) 1px, transparent 1px)', backgroundSize: '38px 38px' }}
       />
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(56,189,248,0.14)_0%,rgba(26,34,50,0)_58%)]" />
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_bottom_right,rgba(251,191,36,0.1)_0%,rgba(26,34,50,0)_58%)]" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(139,115,85,0.12)_0%,rgba(246,239,224,0)_60%)]" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_bottom_right,rgba(241,216,138,0.16)_0%,rgba(246,239,224,0)_62%)]" />
       
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -209,10 +218,10 @@ export const DecodingLab = () => {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="max-w-7xl mx-auto px-6 relative z-10 pt-12 md:pt-0"
       >
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 md:mb-20 gap-6 md:gap-8 border-b border-sky-200/15 pb-8">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 md:mb-20 gap-6 md:gap-8 border-b border-bone-ink/10 pb-8">
           <div className="space-y-4">
-            <h2 className="text-4xl md:text-5xl font-serif text-zinc-100">结构解码实验室</h2>
-            <p className="text-sky-100/90 max-w-xl tracking-widest text-base md:text-lg font-serif">
+            <h2 className="text-4xl md:text-5xl font-serif text-bone-ink">结构解码实验室</h2>
+            <p className="text-bone-ink/60 max-w-xl tracking-widest text-base md:text-lg font-serif">
               白盒化展示 AI 处理流程，从原始拓片到拓扑图表征，量化每一个演化节点。
             </p>
           </div>
@@ -220,7 +229,7 @@ export const DecodingLab = () => {
             <div className="flex items-center gap-3">
               <button
                 onClick={handleUploadClick}
-                className="inline-flex items-center gap-2 px-4 py-2 border border-sky-300/50 text-sky-200 hover:bg-sky-300/10 transition-colors text-sm tracking-widest uppercase font-mono"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-bone-brown/45 text-bone-brown hover:bg-bone-brown/10 transition-colors text-sm tracking-widest uppercase font-mono"
               >
                 <Upload className="w-3.5 h-3.5" /> Start
               </button>
@@ -232,7 +241,7 @@ export const DecodingLab = () => {
                 onChange={handleFileChange}
               />
               {uploadedName && (
-                <span className="text-xs md:text-sm text-zinc-400 max-w-[180px] truncate" title={uploadedName}>
+                <span className="text-xs md:text-sm text-bone-ink/45 max-w-[180px] truncate" title={uploadedName}>
                   {uploadedName}
                 </span>
               )}
@@ -240,12 +249,12 @@ export const DecodingLab = () => {
 
             <div className="flex gap-6 md:gap-8 text-left md:text-right">
             <div>
-              <div className="text-sm tracking-widest uppercase opacity-50 mb-1 text-zinc-400">Model Version</div>
-              <div className="font-mono text-base md:text-lg text-sky-200">Oracle-Net v4.2</div>
+              <div className="text-sm tracking-widest uppercase opacity-60 mb-1 text-bone-ink/45">Model Version</div>
+              <div className="font-mono text-base md:text-lg text-bone-brown">Oracle-Net v4.2</div>
             </div>
             <div>
-              <div className="text-sm tracking-widest uppercase opacity-50 mb-1 text-zinc-400">Compute Power</div>
-              <div className="font-mono text-base md:text-lg text-amber-300">12.4 TFLOPS</div>
+              <div className="text-sm tracking-widest uppercase opacity-60 mb-1 text-bone-ink/45">Compute Power</div>
+              <div className="font-mono text-base md:text-lg text-bone-cyan">12.4 TFLOPS</div>
             </div>
           </div>
           </div>
@@ -254,57 +263,57 @@ export const DecodingLab = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
           {/* Left: Process Flow */}
           <div className="lg:col-span-9 space-y-6 md:space-y-8">
-            <div className="grid grid-cols-2 md:grid-cols-[1fr_1fr_1fr_1.45fr] border-t border-l border-sky-200/15">
+            <div className="grid grid-cols-2 md:grid-cols-[1fr_1fr_1fr_1.45fr] border-t border-l border-bone-ink/12">
               {DECODING_STEPS.map((step, idx) => (
                 <button
                   key={step.stage}
                   onClick={() => setActiveStep(idx)}
-                  className={`relative p-4 md:p-6 border-r border-b border-sky-200/15 transition-all text-left group ${
+                  className={`relative p-4 md:p-6 border-r border-b border-bone-ink/12 transition-all text-left group ${
                     activeStep === idx 
-                      ? 'bg-sky-300/10' 
-                      : 'hover:bg-white/5'
+                      ? 'bg-[#fff4cc]' 
+                      : 'hover:bg-bone-ink/5'
                   }`}
                 >
                   {/* Active Indicator */}
                   {activeStep === idx && (
-                    <motion.div layoutId="active-step" className="absolute top-0 left-0 w-full h-0.5 bg-sky-300" />
+                    <motion.div layoutId="active-step" className="absolute top-0 left-0 w-full h-0.5 bg-bone-brown" />
                   )}
-                  <div className={`text-sm font-mono mb-2 md:mb-3 tracking-widest transition-colors ${activeStep === idx ? 'text-sky-200' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
+                  <div className={`text-sm font-mono mb-2 md:mb-3 tracking-widest transition-colors ${activeStep === idx ? 'text-bone-brown' : 'text-bone-ink/45 group-hover:text-bone-ink/70'}`}>
                     STEP 0{idx + 1}
                   </div>
-                  <div className={`font-serif text-sm md:text-lg lg:text-xl md:whitespace-nowrap transition-colors ${activeStep === idx ? 'text-zinc-100' : 'text-zinc-500 group-hover:text-zinc-100'}`}>
+                  <div className={`font-serif text-sm md:text-lg lg:text-xl md:whitespace-nowrap transition-colors ${activeStep === idx ? 'text-bone-ink' : 'text-bone-ink/55 group-hover:text-bone-ink'}`}>
                     {step.stage}
                   </div>
                 </button>
               ))}
             </div>
 
-            <div className="relative h-[500px] md:h-[660px] border border-sky-200/20 bg-[#141d2e]/70 backdrop-blur-sm group overflow-hidden p-2 md:p-3 flex flex-col">
+            <div className="relative h-[500px] md:h-[660px] border border-bone-ink/18 bg-[#f8f1e4]/85 group overflow-hidden p-2 md:p-3 flex flex-col">
               {/* Corner Brackets for Scientific Instrument Feel */}
-              <div className="absolute top-0 left-0 w-4 md:w-8 h-4 md:h-8 border-t border-l border-sky-300/45" />
-              <div className="absolute top-0 right-0 w-4 md:w-8 h-4 md:h-8 border-t border-r border-sky-300/45" />
-              <div className="absolute bottom-0 left-0 w-4 md:w-8 h-4 md:h-8 border-b border-l border-sky-300/45" />
-              <div className="absolute bottom-0 right-0 w-4 md:w-8 h-4 md:h-8 border-b border-r border-sky-300/45" />
+              <div className="absolute top-0 left-0 w-4 md:w-8 h-4 md:h-8 border-t border-l border-bone-brown/40" />
+              <div className="absolute top-0 right-0 w-4 md:w-8 h-4 md:h-8 border-t border-r border-bone-brown/40" />
+              <div className="absolute bottom-0 left-0 w-4 md:w-8 h-4 md:h-8 border-b border-l border-bone-brown/40" />
+              <div className="absolute bottom-0 right-0 w-4 md:w-8 h-4 md:h-8 border-b border-r border-bone-brown/40" />
 
               {canPreviewLarge && (
                 <div className="absolute top-4 right-4 z-20 flex gap-2">
                   <button
                     onClick={openPreview}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 border border-sky-300/40 text-sky-200 hover:bg-sky-300/10 transition-colors text-xs font-mono"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 border border-bone-brown/40 text-bone-brown hover:bg-bone-brown/10 transition-colors text-xs font-mono"
                   >
                     <Maximize2 className="w-3.5 h-3.5" /> 预览
                   </button>
                   <a
                     href={stageImage || '#'}
                     download={`${DECODING_STEPS[activeStep].stage}.png`}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 border border-amber-300/40 text-amber-200 hover:bg-amber-300/10 transition-colors text-xs font-mono"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 border border-bone-cyan/45 text-bone-cyan hover:bg-bone-cyan/10 transition-colors text-xs font-mono"
                   >
                     <Download className="w-3.5 h-3.5" /> 下载
                   </a>
                 </div>
               )}
 
-              <div className="relative flex-1 min-h-0 overflow-hidden bg-[#0f1626]/85 border border-sky-200/10">
+              <div className="relative flex-1 min-h-0 overflow-hidden bg-white/88 border border-bone-ink/10">
 
               {activeStep < 3 && stageImage ? (
                 <motion.img
@@ -320,18 +329,18 @@ export const DecodingLab = () => {
                   key={analysisContent.title}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="w-full h-full p-5 md:p-8 overflow-y-auto bg-gradient-to-b from-[#1c2a44] to-[#141d2f]"
+                  className="w-full h-full p-5 md:p-8 overflow-y-auto bg-gradient-to-b from-[#fffdf7] to-[#f4ecdc]"
                 >
                   <div className="flex items-center gap-2 mb-4 md:mb-6">
-                    <div className="w-2 h-2 rounded-full bg-sky-300 animate-pulse" />
-                    <h4 className="text-sky-100 font-semibold tracking-wide text-base md:text-lg">{analysisContent.title}</h4>
-                    <span className="ml-1 px-2.5 py-0.5 border border-amber-300/40 text-amber-200 bg-amber-300/10 rounded-full text-xs md:text-sm font-mono tracking-wide">
+                    <div className="w-2 h-2 rounded-full bg-bone-brown animate-pulse" />
+                    <h4 className="text-bone-ink font-semibold tracking-wide text-base md:text-lg">{analysisContent.title}</h4>
+                    <span className="ml-1 px-2.5 py-0.5 border border-[#e6d3a2] text-bone-brown bg-[#fff4cc] rounded-full text-xs md:text-sm font-mono tracking-wide">
                       把握率 {analysisContent.confidence}
                     </span>
                   </div>
-                  <div className="space-y-3 md:space-y-4 text-zinc-200 leading-relaxed text-sm md:text-base">
+                  <div className="space-y-3 md:space-y-4 text-bone-ink/80 leading-relaxed text-sm md:text-base">
                     {analysisContent.points.map((point) => (
-                      <p key={point} className="border-l border-sky-300/40 pl-3 md:pl-4">
+                      <p key={point} className="border-l border-bone-brown/35 pl-3 md:pl-4">
                         {point}
                       </p>
                     ))}
@@ -341,9 +350,9 @@ export const DecodingLab = () => {
 
               {/* Static Crosshairs instead of moving scanline */}
               <div className={`absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 ${activeStep === 3 ? 'hidden' : ''}`}>
-                <div className="w-full h-px bg-sky-300 absolute" />
-                <div className="h-full w-px bg-sky-300 absolute" />
-                <div className="w-8 md:w-16 h-8 md:h-16 border border-sky-300 rounded-full absolute" />
+                <div className="w-full h-px bg-bone-brown absolute" />
+                <div className="h-full w-px bg-bone-brown absolute" />
+                <div className="w-8 md:w-16 h-8 md:h-16 border border-bone-brown rounded-full absolute" />
               </div>
 
               <AnimatePresence>
@@ -352,20 +361,20 @@ export const DecodingLab = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 z-20 bg-[#0d1526]/82 backdrop-blur-[1px] flex items-center justify-center"
+                    className="absolute inset-0 z-20 bg-[#f8f0e3]/82 backdrop-blur-[1px] flex items-center justify-center"
                   >
-                    <div className="w-[88%] max-w-md border border-sky-300/35 bg-[#13203a]/95 p-5 md:p-6">
-                      <div className="text-sky-100 font-serif text-lg md:text-xl mb-3">模型正在分析与输出中</div>
-                      <p className="text-zinc-300 text-sm md:text-base leading-relaxed mb-4">
+                    <div className="w-[88%] max-w-md border border-bone-brown/35 bg-[#fff9ec]/95 p-5 md:p-6">
+                      <div className="text-bone-ink font-serif text-lg md:text-xl mb-3">模型正在分析与输出中</div>
+                      <p className="text-bone-ink/65 text-sm md:text-base leading-relaxed mb-4">
                         正在进行骨架提取、拓扑建模与候选匹配，请稍后，系统正在分析。
                       </p>
-                      <div className="h-1.5 bg-sky-200/15 overflow-hidden">
+                      <div className="h-1.5 bg-bone-ink/10 overflow-hidden">
                         <motion.div
                           animate={{ width: `${analysisProgress}%` }}
-                          className="h-full bg-gradient-to-r from-sky-300 to-amber-300"
+                          className="h-full bg-gradient-to-r from-bone-brown to-bone-cyan"
                         />
                       </div>
-                      <div className="mt-2 text-right text-xs font-mono tracking-wider text-sky-200/80">
+                      <div className="mt-2 text-right text-xs font-mono tracking-wider text-bone-brown/80">
                         {analysisProgress}%
                       </div>
                     </div>
@@ -374,14 +383,14 @@ export const DecodingLab = () => {
               </AnimatePresence>
               </div>
               
-              <div className="mt-3 md:mt-4 border border-sky-300/12 bg-[#152033]/75 p-4 md:p-5">
+              <div className="mt-3 md:mt-4 border border-bone-ink/12 bg-[#fff8ea] p-4 md:p-5">
                 <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
-                  <div className="w-1.5 h-1.5 bg-sky-300 rounded-full animate-pulse" />
-                  <span className="text-sm font-mono text-amber-300 uppercase tracking-widest">
+                  <div className="w-1.5 h-1.5 bg-bone-brown rounded-full animate-pulse" />
+                  <span className="text-sm font-mono text-bone-cyan uppercase tracking-widest">
                     {activeStep === 3 ? 'Inference Notes' : 'Processing Output'}
                   </span>
                 </div>
-                <p className="text-zinc-200 text-sm md:text-base leading-relaxed tracking-wide font-serif">
+                <p className="text-bone-ink/80 text-sm md:text-base leading-relaxed tracking-wide font-serif">
                   {DECODING_STEPS[activeStep].description}
                 </p>
               </div>
@@ -389,42 +398,42 @@ export const DecodingLab = () => {
           </div>
 
           {/* Right: Metrics Panel */}
-          <div className="lg:col-span-3 border border-sky-200/20 bg-[#141d2e]/70 backdrop-blur-sm p-6 md:p-8 flex flex-col">
-            <div className="flex items-center gap-3 border-b border-sky-200/15 pb-4 md:pb-6 mb-6 md:mb-8">
-              <Database className="text-sky-300 w-4 h-4" />
-              <h3 className="text-base font-serif tracking-widest text-sky-200 uppercase">量化指标</h3>
+          <div className="lg:col-span-3 border border-bone-ink/15 bg-[#fcf5e7] p-6 md:p-8 flex flex-col">
+            <div className="flex items-center gap-3 border-b border-bone-ink/10 pb-4 md:pb-6 mb-6 md:mb-8">
+              <Database className="text-bone-brown w-4 h-4" />
+              <h3 className="text-base font-serif tracking-widest text-bone-brown uppercase">量化指标</h3>
             </div>
 
             <button
               onClick={handleStartAnalysis}
               disabled={!uploadedImage || isAnalyzing}
-              className="mb-6 md:mb-8 inline-flex items-center justify-center gap-2 px-4 py-3 border border-sky-300/40 text-sky-200 hover:bg-sky-300/10 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors text-sm tracking-widest uppercase font-mono"
+              className="mb-6 md:mb-8 inline-flex items-center justify-center gap-2 px-4 py-3 border border-bone-brown/40 text-bone-brown hover:bg-bone-brown/10 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors text-sm tracking-widest uppercase font-mono"
             >
               <Play className="w-3.5 h-3.5" />
               {isAnalyzing ? '分析中...' : '开始分析'}
             </button>
 
             <div className="space-y-6 md:space-y-8 flex-grow">
-              {Object.entries(DECODING_STEPS[activeStep].metrics).map(([key, value]) => (
+              {Object.entries(currentStepMetrics).map(([key, value]) => (
                 <div key={key} className="space-y-2 md:space-y-3">
-                  <div className="flex justify-between text-sm uppercase tracking-widest text-zinc-500">
+                  <div className="flex justify-between text-sm uppercase tracking-widest text-bone-ink/50">
                     <span>{key}</span>
-                    <span className="text-sky-300 font-mono">{value}</span>
+                    <span className="text-bone-cyan font-mono">{value}</span>
                   </div>
-                  <div className="h-px bg-white/10 relative">
+                  <div className="h-px bg-bone-ink/12 relative">
                     <motion.div 
                       initial={{ width: 0 }}
                       animate={{ width: typeof value === 'string' && value.includes('%') ? value : '85%' }}
-                      className="absolute top-0 left-0 h-full bg-sky-300"
+                      className="absolute top-0 left-0 h-full bg-bone-brown"
                     />
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="pt-6 md:pt-8 mt-6 md:mt-8 border-t border-sky-200/15">
-              <div className="text-sm uppercase tracking-widest text-sky-300/60 mb-2 md:mb-3 font-mono">System Trace</div>
-              <p className="text-sm md:text-base text-zinc-500 leading-relaxed font-mono">
+            <div className="pt-6 md:pt-8 mt-6 md:mt-8 border-t border-bone-ink/10">
+              <div className="text-sm uppercase tracking-widest text-bone-brown/60 mb-2 md:mb-3 font-mono">System Trace</div>
+              <p className="text-sm md:text-base text-bone-ink/55 leading-relaxed font-mono">
                 {isAnalyzing ? (
                   <>
                     &gt; Extracting feature vectors via CNN...<br/>
@@ -452,7 +461,7 @@ export const DecodingLab = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[120] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 z-[120] bg-bone-ink/35 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
             onClick={() => setPreviewImage(null)}
           >
             <motion.div
@@ -460,22 +469,22 @@ export const DecodingLab = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.96, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="w-full max-w-6xl max-h-[92vh] bg-[#101827] border border-sky-300/25"
+              className="w-full max-w-6xl max-h-[92vh] bg-[#fff9ec] border border-bone-ink/18"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-sky-300/15">
-                <div className="text-sky-100 font-serif text-base md:text-lg">{previewTitle} 大图预览</div>
+              <div className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-bone-ink/10">
+                <div className="text-bone-ink font-serif text-base md:text-lg">{previewTitle} 大图预览</div>
                 <div className="flex items-center gap-2">
                   <a
                     href={previewImage}
                     download={`${previewTitle}.png`}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 border border-amber-300/40 text-amber-200 hover:bg-amber-300/10 transition-colors text-xs font-mono"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 border border-bone-brown/40 text-bone-brown hover:bg-bone-brown/10 transition-colors text-xs font-mono"
                   >
                     <Download className="w-3.5 h-3.5" /> 下载
                   </a>
                   <button
                     onClick={() => setPreviewImage(null)}
-                    className="inline-flex items-center justify-center w-8 h-8 border border-sky-300/30 text-sky-200 hover:bg-sky-300/10"
+                    className="inline-flex items-center justify-center w-8 h-8 border border-bone-ink/25 text-bone-ink/70 hover:bg-bone-ink/10"
                   >
                     <X className="w-4 h-4" />
                   </button>
